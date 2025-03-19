@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Countdown & Animation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            color: gold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        #message {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+
+        }
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        #animatedText {
+            font-size: 4em;
+            font-weight: bold;
+            display: none;
+            animation: glow 1.5s infinite alternate, scaleUp 2s infinite alternate;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px gold, 0 0 10px orange, 0 0 15px red; }
+            100% { text-shadow: 0 0 10px gold, 0 0 20px orange, 0 0 30px red; }
+        }
+        @keyframes scaleUp {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1.1); }
+        }
+        marquee, .date-info {
+            font-size: 1.5em;
+            color: white;
+            margin-top: 20px;
+            display: none;
+        }
+        .date-info {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="message">Happy Birthday to me!</div>
+    <div id="countdown"></div>
+    <div id="animatedText">🎉 HAPPY BIRTHDAY <br> USAMA KHAN 🎂</div>
+    <marquee id="birthdayMessage" direction="left">Wishing myself a very happy birthday today! May this year be filled with joy, success, and wonderful moments.</marquee>
+    <div class="date-info" id="dateInfo">| THURSDAY | 20 | MARCH |</div>
+    
+    <script>
+        function startCountdown() {
+            let now = new Date();
+            let midnight = new Date();
+            midnight.setHours(24, 0, 0, 0); // Set to 12:00 AM
+            
+            let timeDiff = Math.floor((midnight - now) / 1000); // Time difference in seconds
+            let countdownElement = document.getElementById("countdown");
+            let messageElement = document.getElementById("message");
+            let animationElement = document.getElementById("animatedText");
+            let birthdayMessage = document.getElementById("birthdayMessage");
+            let dateInfo = document.getElementById("dateInfo");
+            
+            let countdownInterval = setInterval(function () {
+                let hours = Math.floor(timeDiff / 3600);
+                let minutes = Math.floor((timeDiff % 3600) / 60);
+                let seconds = timeDiff % 60;
+                
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                
+                countdownElement.textContent = hours + ":" + minutes + ":" + seconds;
+                
+                if (--timeDiff < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.style.display = "none";
+                    messageElement.style.display = "none";
+                    animationElement.style.display = "block";
+                    birthdayMessage.style.display = "block";
+                    dateInfo.style.display = "block";
+                }
+            }, 1000);
+        }
+        
+        window.onload = startCountdown;
+    </script>
+</body>
+</html>
